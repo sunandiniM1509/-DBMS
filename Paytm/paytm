@@ -1,0 +1,2 @@
+1.Customers and Branchs are Strong Entities.
+2.Accounts can not exist without Branch Id.

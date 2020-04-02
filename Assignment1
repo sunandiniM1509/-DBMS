@@ -1,0 +1,108 @@
+1.
+select film_id,title from film where film_id in(select film_id from film_category where (category_id in(select category_id from category where name='Comedy')) AND rating ='PG-13');
++---------+-------------------------+
+| film_id | title                   |
++---------+-------------------------+
+|       7 | AIRPLANE SIERRA         |
+|      28 | ANTHEM LUKE             |
+|     324 | FLINTSTONES HAPPINESS   |
+|     335 | FREEDOM CLEOPATRA       |
+|     385 | GROUNDHOG UNCUT         |
+|     502 | KNOCK WARLOCK           |
+|     657 | PARADISE SABRINA        |
+|     672 | PERFECT GROOVE          |
+|     754 | RUSHMORE MERMAID        |
+|     756 | SADDLE ANTITRUST        |
+|     857 | STRICTLY SCARFACE       |
+|     905 | TRAINSPOTTING STRANGERS |
++---------+-------------------------+
+12 rows in set (0.00 sec)
+
+2.
+mysql> select title from film_list,inventory,rental where film_list.category='Horror' and film_list.FID =inventory.film_id and inventory.inventory_id=rental.inventory_id group by title order by count(*) desc limit 3;
++--------------+
+| title        |
++--------------+
+| PULP BEVERLY |
+| FAMILY SWEET |
+| SWARM GOLD   |
++--------------+
+3 rows in set (0.05 sec)
+
+3.
+mysql> select ID,name from customer_list where country = 'India' and id in ( select r.customer_id from film_list fl, inventory i , rental r where fl.category = 'Sports' and fl.FID = i.film_id and r.inventory_id = i.inventory_id Group by r.customer_id);
++-----+-------------------+
+| ID  | name              |
++-----+-------------------+
+| 367 | ADAM GOOCH        |
+| 297 | SHERRI RHODES     |
+| 175 | ANNETTE OLSON     |
+| 225 | ARLENE HARVEY     |
+| 534 | CHRISTIAN JUNG    |
+| 379 | CARLOS COUGHLIN   |
+| 209 | TONYA CHAPMAN     |
+|  15 | HELEN HARRIS      |
+| 468 | TIM CARY          |
+| 167 | SALLY PIERCE      |
+| 440 | BERNARD COLBY     |
+| 121 | JOSEPHINE GOMEZ   |
+| 192 | LAURIE LAWRENCE   |
+| 117 | EDITH MCDONALD    |
+| 370 | WAYNE TRUONG      |
+| 186 | HOLLY FOX         |
+| 259 | LENA JENSEN       |
+| 412 | ALLEN BUTTERFIELD |
+| 136 | ANITA MORALES     |
+|  60 | MILDRED BAILEY    |
+|  32 | AMY LOPEZ         |
+| 224 | PEARL GARZA       |
+| 274 | NAOMI JENNINGS    |
+| 419 | CHAD CARBONE      |
+| 271 | PENNY NEAL        |
+| 316 | STEVEN CURLEY     |
+|  28 | CYNTHIA YOUNG     |
+|  59 | CHERYL MURPHY     |
+| 268 | NINA SOTO         |
+| 300 | JOHN FARNSWORTH   |
+|  95 | PAULA BRYANT      |
+| 296 | RAMONA HALE       |
+| 421 | LEE HAWKS         |
+| 135 | JUANITA MASON     |
+| 426 | BRADLEY MOTLEY    |
+|  78 | LORI WOOD         |
+| 554 | DWAYNE OLVERA     |
+| 336 | JOSHUA MARK       |
+| 358 | SAMUEL MARLOW     |
+| 356 | GERALD FULTZ      |
+|  68 | NICOLE PETERSON   |
+| 502 | BRETT CORNWELL    |
+| 170 | BEATRICE ARNOLD   |
+| 446 | THEODORE CULP     |
+| 231 | GEORGIA JACOBS    |
+| 403 | MIKE WAY          |
+| 123 | SHANNON FREEMAN   |
+| 508 | MILTON HOWLAND    |
+|  12 | NANCY THOMAS      |
++-----+-------------------+
+49 rows in set (0.05 sec)
+
+4.
+mysql> select * from customer_list cl where cl.country = 'Canada' and cl.id in ( select r.customer_id from actor a, film_actor fa, inventory i, rental r where a.first_name = 'NICK' and a.last_name = 'WAHLBERG' and a.actor_id = fa.actor_id and fa.film_id = i.film_id and i.inventory_id = r.inventory_id);
++-----+-------------------+--------------------+----------+--------------+---------+---------+--------+-----+
+| ID  | name              | address            | zip code | phone        | city    | country | notes  | SID |
++-----+-------------------+--------------------+----------+--------------+---------+---------+--------+-----+
+| 189 | LORETTA CARPENTER | 891 Novi Sad Manor | 5379     | 247646995453 | Oshawa  | Canada  | active |   1 |
+| 463 | DARRELL POWER     | 1844 Usak Avenue   | 84461    | 164414772677 | Halifax | Canada  | active |   2 |
++-----+-------------------+--------------------+----------+--------------+---------+---------+--------+-----+
+2 rows in set (0.03 sec)
+
+
+5.
+mysql> select count(distinct fl.film_id) from actor a,film fl,film_actor fa  where a.first_name ='SEAN' and a.last_name='WILLIAMS' and fa.actor_id = a.actor_id;
++----------------------------+
+| count(distinct fl.film_id) |
++----------------------------+
+|                       1000 |
++----------------------------+
+1 row in set (0.01 sec)
+

@@ -1,0 +1,63 @@
+1.
+mysql> select count(distinct title) from film where special_features like 'Deleted Scenes' and film.film_id in  (select fc.film_id  from category c, film_category fc where c.name = 'Documentary' and c.category_id = fc.category_id);
++-----------------------+
+| count(distinct title) |
++-----------------------+
+|                     7 |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(distinct title) from film where special_features like '%Deleted Scenes%' and film.film_id in  (select fc.film_id  from category c, film_category fc where c.name = 'Documentary' and c.category_id = fc.category_id);
++-----------------------+
+| count(distinct title) |
++-----------------------+
+|                    34 |
++-----------------------+
+1 row in set (0.00 sec)
+
+
+2.
+mysql> select count(*) from category c, film_category fc, inventory i, rental r, staff s
+    -> where c.name = 'Sci-fi' and c.category_id = fc.category_id and fc.film_id = i.film_id and i.inventory_id = r.inventory_id and r.staff_id = s.staff_id
+    -> and s.first_name = 'Jon' and s.last_name ='Stephens';
++----------+
+| count(*) |
++----------+
+|      548 |
++----------+
+1 row in set (0.01 sec)
+
+
+3.
+mysql> select sum(amount) from film_list fl, inventory i, rental r,payment p where fl.category = 'Animation' and fl.FID = i.film_id and i.inventory_id = r.inventory_id and r.rental_id = p.rental_id;
++-------------+
+| sum(amount) |
++-------------+
+|     4656.30 |
++-------------+
+1 row in set (0.05 sec)
+
+4.
+mysql> select fl.category, count( all fl.category) from film_list fl where fl.FID in (select i.film_id from customer_list cl, rental r, inventory i where cl.name = 'PATRICIA JOHNSON' and cl.ID = r.customer_id and r.inventory_id = i.inventory_id Group by i.film_id) Group by fl.category order by count(all fl.category) desc, fl.category asc limit 3;
++----------+-------------------------+
+| category | count( all fl.category) |
++----------+-------------------------+
+| Sports   |                       5 |
+| Classics |                       4 |
+| Action   |                       3 |
++----------+-------------------------+
+3 rows in set (0.05 sec)
+
+5.
+mysql> select fl.title from film_list fl, inventory i, rental r, customer_list cl where fl.rating = 'R' and fl.FID = i.film_id and i.inventory_id = r.inventory_id and r.customer_id = cl.ID and cl.name = 'SUSAN WILSON';
++-------------------+
+| title             |
++-------------------+
+| FORREST SONS      |
+| HIGH ENCINO       |
+| VACATION BOONDOCK |
++-------------------+
+3 rows in set (0.06 sec)
+
+
+

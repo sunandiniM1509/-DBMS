@@ -1,0 +1,5 @@
+1.Ticket is a weak entity.
+2.A Ticket can only exist only if there is a customer.
+3.Also a ticket can be reserved or unreserved.
+4.A customer can not book two tickets at same time
+5.Train and customer are strong entities.
